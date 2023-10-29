@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../config/database.js";
-import bcrypt from "bcrypt"; // Import modul bcrypt
+import bcrypt from "bcryptjs"; // Import modul bcrypt
 
 const {DataTypes} = Sequelize;
 

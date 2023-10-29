@@ -14,7 +14,7 @@ import {
 const router = express.Router();
 
 router.get('/user', getAllUser);
-router.get('/user/:username/:password', getUserByLogin);
+router.post('/login', getUserByLogin);
 router.get('/check/user/:id', getUserById)
 router.get('/login/status/user/:id', getUserStatus)
 router.post('/user', createUser);

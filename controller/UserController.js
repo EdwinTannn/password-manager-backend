@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import path from 'path';
+import bcrypt from 'bcryptjs';
 
 // getting all user picture for face recognition train data.
 export const getAllUser = async (req, res) => {
@@ -9,8 +10,8 @@ export const getAllUser = async (req, res) => {
         });
         res.json(response);
     } catch (error) {
-        console.log(error.message)
-    }
+        console.log(error.message) 
+    }  
 }
 
 // get the user current status.
@@ -44,16 +45,18 @@ export const getUserById = async (req, res) => {
 
 // get the user by username and password
 export const getUserByLogin = async (req, res) => {
-    const { username, password } = req.params;
+    const { username, password } = req.body;
 
     const user = await User.findOne({
         where: {
-            user_username: username
+            user_username: username, 
         }
     });
 
     if (user) {
-        const check = bcrypt.compare(password, user.password);
+        const check = await bcrypt.compare(password, user.user_password);
+        // console.log(check)
+        // console.log(user)
         if (check) {
             // Password valid
             const response = await User.update({ islogin: 'true' }, {
@@ -125,7 +128,7 @@ export const logoutUser = async (req, res) => {
 export const createUser = (req, res) => {
     if (req.files === null) return res.status(400).json({ msg: 'No File Uploaded' });
 
-    const bcrypt = require('bcrypt');
+    // const bcrypt = import('bcrypt');
     const picture = req.files.file;
     const fileSize = picture.data.length;
     const ext = path.extname(picture.name);
